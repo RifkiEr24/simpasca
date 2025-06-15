@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class DataPascaBencana extends Model<DataPascaBencana> {
-
-    private int id; 
+    private int id;
     private int jumlahKorban;
     private String catatan;
 
@@ -16,14 +15,6 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
         super();
         this.table = "data_pasca_bencana";
     }
-
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public int getJumlahKorban() { return jumlahKorban; }
-    public void setJumlahKorban(int jumlahKorban) { this.jumlahKorban = jumlahKorban; }
-    public String getCatatan() { return catatan; }
-    public void setCatatan(String catatan) { this.catatan = catatan; }
 
     @Override
     protected DataPascaBencana toModel(ResultSet rs) throws SQLException {
@@ -33,14 +24,18 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
         dpb.setCatatan(rs.getString("catatan"));
         return dpb;
     }
-
+    
+    @Override
+    protected Object getPrimaryKeyValue() {
+        return this.getId();
+    }
+    
     public ArrayList<Logistik> getLogistikDistribusi(int bencanaId) {
         ArrayList<Logistik> list = new ArrayList<>();
         String query = "SELECT l.nama, l.satuan, lr.jumlah "
                      + "FROM logistik_riwayat lr "
                      + "JOIN logistik l ON lr.logistik_id = l.id "
                      + "WHERE lr.bencana_id = ? AND lr.tipe = 'Keluar'";
-        
         this.connect();
         try {
             PreparedStatement pstmt = this.con.prepareStatement(query);
@@ -50,11 +45,11 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
                 Logistik log = new Logistik();
                 log.setNama(rs.getString("nama"));
                 log.setSatuan(rs.getString("satuan"));
-                log.setQty(rs.getInt("jumlah")); // 'qty' di sini merepresentasikan jumlah yang keluar
+                log.setQty(rs.getInt("jumlah"));
                 list.add(log);
             }
         } catch (SQLException e) {
-            System.out.println("Error getLogistikDistribusi: " + e.getMessage());
+            // handle error
         } finally {
             this.disconnect();
         }
@@ -64,12 +59,12 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
     public void saveOrUpdate() {
         this.connect();
         try {
+            stmt = con.createStatement();
             String checkQuery = "SELECT COUNT(*) as rowcount FROM " + this.table + " WHERE id = " + this.id;
             ResultSet rs = this.stmt.executeQuery(checkQuery);
             rs.next();
             int count = rs.getInt("rowcount");
             rs.close();
-
             String query;
             if (count > 0) {
                 query = String.format("UPDATE %s SET jumlah_korban = %d, catatan = '%s' WHERE id = %d",
@@ -79,19 +74,17 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
                                       this.table, this.id, this.jumlahKorban, this.catatan);
             }
             this.stmt.executeUpdate(query);
-            
         } catch (SQLException e) {
-            System.out.println("Error saveOrUpdate: " + e.getMessage());
+            // handle error
         } finally {
             this.disconnect();
         }
     }
     
-
     public boolean tambahLogistikDistribusi(int bencanaId, int logistikId, int jumlah) {
         this.connect();
         try {
-            // 1. Catat di riwayat sebagai 'Keluar' dan tautkan ke bencana_id
+            // 1. Catat di riwayat
             String riwayatQuery = "INSERT INTO logistik_riwayat (logistik_id, tipe, jumlah, keterangan, tanggal, bencana_id) VALUES (?, 'Keluar', ?, ?, ?, ?)";
             PreparedStatement riwayatPstmt = this.con.prepareStatement(riwayatQuery);
             riwayatPstmt.setInt(1, logistikId);
@@ -102,20 +95,25 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
             riwayatPstmt.executeUpdate();
             riwayatPstmt.close();
 
-            // 2. Kurangi stok di tabel logistik utama
+            // 2. Kurangi stok
             String updateStokQuery = "UPDATE logistik SET qty = qty - ? WHERE id = ?";
             PreparedStatement updateStokPstmt = this.con.prepareStatement(updateStokQuery);
             updateStokPstmt.setInt(1, jumlah);
             updateStokPstmt.setInt(2, logistikId);
             updateStokPstmt.executeUpdate();
             updateStokPstmt.close();
-
             return true;
         } catch (SQLException e) {
-            System.out.println("Error tambahLogistikDistribusi: " + e.getMessage());
             return false;
         } finally {
             this.disconnect();
         }
     }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public int getJumlahKorban() { return jumlahKorban; }
+    public void setJumlahKorban(int jumlahKorban) { this.jumlahKorban = jumlahKorban; }
+    public String getCatatan() { return catatan; }
+    public void setCatatan(String catatan) { this.catatan = catatan; }
 }

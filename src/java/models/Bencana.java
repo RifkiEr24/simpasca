@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class Bencana extends Model<Bencana> {
-    
     private int id;
     private String tipe;
     private String lokasi;
@@ -13,9 +12,24 @@ public class Bencana extends Model<Bencana> {
     private Date tanggal;
 
     public Bencana() {
-        super(); 
-        this.table = "bencana";    
-        this.primaryKey = "id";     
+        super();
+        this.table = "bencana";
+    }
+
+    @Override
+    protected Bencana toModel(ResultSet rs) throws SQLException {
+        Bencana b = new Bencana();
+        b.setId(rs.getInt("id"));
+        b.setTipe(rs.getString("tipe"));
+        b.setLokasi(rs.getString("lokasi"));
+        b.setLevel(rs.getString("level"));
+        b.setTanggal(rs.getTimestamp("tanggal"));
+        return b;
+    }
+    
+    @Override
+    protected Object getPrimaryKeyValue() {
+        return this.getId();
     }
 
     public int getId() { return id; }
@@ -28,15 +42,4 @@ public class Bencana extends Model<Bencana> {
     public void setLevel(String level) { this.level = level; }
     public Date getTanggal() { return tanggal; }
     public void setTanggal(Date tanggal) { this.tanggal = tanggal; }
-
-    @Override
-    protected Bencana toModel(ResultSet rs) throws SQLException {
-        Bencana b = new Bencana();
-        b.setId(rs.getInt("id"));
-        b.setTipe(rs.getString("tipe"));
-        b.setLokasi(rs.getString("lokasi"));
-        b.setLevel(rs.getString("level"));
-        b.setTanggal(rs.getTimestamp("tanggal"));
-        return b;
-    }
 }

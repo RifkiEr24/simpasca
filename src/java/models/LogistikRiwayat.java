@@ -1,4 +1,4 @@
-// Simpan di: models/LogistikRiwayat.java
+
 package models;
 
 import java.util.Date;
@@ -12,7 +12,6 @@ public class LogistikRiwayat {
     private Date tanggal;
     private int kasId;
     private int bencanaId;
-
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

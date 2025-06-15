@@ -67,13 +67,40 @@ public class BencanaController extends HttpServlet {
                 request.getRequestDispatcher("/bencana/detail.jsp").forward(request, response);
                 break;
             
-            case "delete":
-                // Memproses penghapusan data bencana
-                int idToDelete = Integer.parseInt(request.getParameter("id"));
-                Bencana bencanaToDelete = new Bencana();
-                bencanaToDelete.setId(idToDelete);
-                bencanaToDelete.delete();
-                response.sendRedirect("bencana?menu=view");
+              case "delete":
+                System.out.println("--- [DEBUG] Aksi 'delete' dipanggil ---");
+                String idStr = request.getParameter("id");
+                System.out.println("--- [DEBUG] ID yang diterima dari URL: " + idStr);
+
+                try {
+                    int idToDelete = Integer.parseInt(idStr);
+                    System.out.println("--- [DEBUG] ID berhasil di-parse menjadi: " + idToDelete);
+
+                    Bencana bencanaToDelete = new Bencana();
+                    bencanaToDelete.setId(idToDelete);
+                    
+                    System.out.println("--- [DEBUG] Memanggil method delete() pada model...");
+                    boolean isDeleted = bencanaToDelete.delete(); // Method delete kita kembalikan boolean
+                    
+                    if(isDeleted) {
+                        System.out.println("--- [DEBUG] Method delete() berhasil dijalankan.");
+                    } else {
+                        System.err.println("--- [ERROR] Method delete() gagal, cek pesan error di Model.");
+                    }
+
+                    System.out.println("--- [DEBUG] Melakukan redirect ke halaman view...");
+                    response.sendRedirect("bencana?menu=view");
+                    
+                } catch (NumberFormatException e) {
+                    System.err.println("--- [FATAL ERROR] Gagal parse ID! Pastikan ID adalah angka yang valid.");
+                    System.err.println("--- Pesan Error: " + e.getMessage());
+                    // Redirect ke halaman error atau halaman view dengan pesan error
+                    response.sendRedirect("bencana?menu=view&error=invalid_id");
+                } catch (Exception e) {
+                    System.err.println("--- [FATAL ERROR] Terjadi exception lain saat proses delete.");
+                    e.printStackTrace(); // Cetak full stack trace untuk debugging mendalam
+                    response.sendRedirect("bencana?menu=view&error=delete_failed");
+                }
                 break;
                 
             default:
