@@ -40,7 +40,6 @@ public abstract class Model<E> {
         }
     }
 
-    // --- METHOD ABSTRACT (WAJIB DIIMPLEMENTASIKAN ANAK) ---
     protected abstract E toModel(ResultSet rs) throws SQLException;
 
     // --- METHOD UNTUK SELECT DATA ---
@@ -77,13 +76,6 @@ public abstract class Model<E> {
         return null;
     }
 
-    // =====================================================================
-    // == BAGIAN YANG HILANG SEBELUMNYA ADA DI SINI (INSERT, UPDATE, DELETE) ==
-    // =====================================================================
-
-    /**
-     * Menyimpan objek saat ini sebagai record baru di database.
-     */
     public boolean insert() {
         connect();
         try {
@@ -92,7 +84,6 @@ public abstract class Model<E> {
             
             for (Field field : this.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
-                // Lewati atribut dari parent class Model dan primary key
                 if (isParentField(field.getName()) || field.getName().equals(this.primaryKey)) continue;
 
                 Object value = field.get(this);
@@ -101,7 +92,6 @@ public abstract class Model<E> {
                     values.append("'").append(formatValue(value)).append("',");
                 }
             }
-            // Hapus koma di akhir
             cols.setLength(cols.length() - 1);
             values.setLength(values.length() - 1);
             

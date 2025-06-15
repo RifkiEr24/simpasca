@@ -10,7 +10,6 @@ package models;
  */
 import java.util.List;
 
-// Interface sesuai deskripsi Anda
 public interface Analisis {
     List<DataPascaBencana> getDataPascaBencana();
     List<Logistik> getDataLogistik();

@@ -1,4 +1,3 @@
-// Simpan di: models/DataPascaBencana.java
 package models;
 
 import java.sql.PreparedStatement;
@@ -9,7 +8,7 @@ import java.util.Date;
 
 public class DataPascaBencana extends Model<DataPascaBencana> {
 
-    private int id; // Sama dengan Bencana ID
+    private int id; 
     private int jumlahKorban;
     private String catatan;
 
@@ -37,7 +36,6 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
 
     public ArrayList<Logistik> getLogistikDistribusi(int bencanaId) {
         ArrayList<Logistik> list = new ArrayList<>();
-        // Query ini sekarang mengambil dari logistik_riwayat
         String query = "SELECT l.nama, l.satuan, lr.jumlah "
                      + "FROM logistik_riwayat lr "
                      + "JOIN logistik l ON lr.logistik_id = l.id "
@@ -89,9 +87,7 @@ public class DataPascaBencana extends Model<DataPascaBencana> {
         }
     }
     
-    // ===============================================================
-    // == METHOD YANG DIPERBAIKI ADA DI SINI ==
-    // ===============================================================
+
     public boolean tambahLogistikDistribusi(int bencanaId, int logistikId, int jumlah) {
         this.connect();
         try {

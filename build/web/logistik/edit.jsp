@@ -37,7 +37,6 @@
     </div>
 </div>
 
-<%-- ===== BAGIAN BARU UNTUK RASIO ===== --%>
 <div class="p-3 border rounded bg-light mb-3">
     <h6 class="form-label">Rasio Kebutuhan (Opsional)</h6>
     <div class="row">

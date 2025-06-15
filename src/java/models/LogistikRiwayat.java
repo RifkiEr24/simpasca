@@ -13,8 +13,7 @@ public class LogistikRiwayat {
     private int kasId;
     private int bencanaId;
 
-    // Generate semua Getters and Setters untuk atribut di atas
-    // ... (Klik kanan -> Insert Code -> Getter and Setter...)
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getLogistikId() { return logistikId; }

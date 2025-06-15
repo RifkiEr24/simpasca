@@ -1,4 +1,3 @@
-// Simpan di: controllers/LogistikController.java
 package controllers;
 
 import models.Logistik;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 public class LogistikController extends HttpServlet {
 
     /**
-     * Menangani semua permintaan GET (menampilkan halaman).
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,23 +70,19 @@ public class LogistikController extends HttpServlet {
         }
     }
 
-    /**
-     * Menangani semua permintaan POST (memproses data dari form).
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
 
-        // Aksi untuk menambah atau mengedit item logistik
         if ("add".equals(action) || "edit".equals(action)) {
             Logistik logistik = new Logistik();
             logistik.setNama(request.getParameter("nama"));
             logistik.setKategori(request.getParameter("kategori"));
             logistik.setSatuan(request.getParameter("satuan"));
             logistik.setQty(Integer.parseInt(request.getParameter("qty")));
-            // Mengambil data rasio dari form
             logistik.setRasioPerKorban(Double.parseDouble(request.getParameter("rasio_per_korban")));
             logistik.setUnitRasio(request.getParameter("unit_rasio"));
 
@@ -102,7 +96,6 @@ public class LogistikController extends HttpServlet {
             return;
         }
         
-        // Aksi untuk mencatat penerimaan stok (donasi)
         if ("terima_stok".equals(action)) {
             int logistikId = Integer.parseInt(request.getParameter("logistik_id"));
             int jumlah = Integer.parseInt(request.getParameter("jumlah"));

@@ -18,6 +18,18 @@
             <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/bencana/edit.jsp</file>
             <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/src/java/controllers/BencanaController.java</file>
             <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/src/java/DBConnect.java</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/src/java/controllers/LogistikController.java</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/logistik/add.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/logistik/edit.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/logistik/view.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/src/java/controllers/AlurKasController.java</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/kas/add.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/kas/edit.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/kas/view.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/bencana/detail.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/src/java/models/LogistikRiwayat.java</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/logistik/terima.jsp</file>
+            <file>file:/C:/Users/Rifki%20Erlangga/Documents/NetBeansProjects/Simpasca/web/logistik/riwayat.jsp</file>
         </group>
     </open-files>
 </project-private>

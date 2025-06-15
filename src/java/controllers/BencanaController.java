@@ -41,12 +41,10 @@ public class BencanaController extends HttpServlet {
                 break;
                 
             case "add":
-                // Menampilkan form untuk menambah bencana baru
                 request.getRequestDispatcher("/bencana/add.jsp").forward(request, response);
                 break;
                 
             case "edit":
-                // Menampilkan form untuk mengedit bencana yang ada
                 int idToEdit = Integer.parseInt(request.getParameter("id"));
                 Bencana bencanaToEdit = new Bencana().find(idToEdit);
                 request.setAttribute("bencana", bencanaToEdit);
@@ -54,16 +52,13 @@ public class BencanaController extends HttpServlet {
                 break;
             
             case "detail":
-                // Menampilkan halaman detail lengkap untuk satu bencana
                 int idToDetail = Integer.parseInt(request.getParameter("id"));
                 
-                // Mengambil semua data yang diperlukan
                 Bencana bencanaDetail = new Bencana().find(idToDetail);
                 DataPascaBencana dataPascaBencana = new DataPascaBencana().find(idToDetail);
                 ArrayList<Logistik> logistikDistribusi = new DataPascaBencana().getLogistikDistribusi(idToDetail);
                 ArrayList<Logistik> semuaLogistik = new Logistik().get(); // Untuk dropdown
                 
-                // Mengirim semua data ke JSP
                 request.setAttribute("bencana", bencanaDetail);
                 request.setAttribute("dataPascaBencana", dataPascaBencana);
                 request.setAttribute("logistikDistribusi", logistikDistribusi);
@@ -82,16 +77,12 @@ public class BencanaController extends HttpServlet {
                 break;
                 
             default:
-                // Jika parameter menu tidak dikenali, kembali ke halaman view
                 response.sendRedirect("bencana?menu=view");
                 break;
         }
     }
 
-    /**
-     * Menangani semua permintaan POST (memproses data dari form).
-     * Menggunakan parameter 'action' untuk menentukan proses apa yang harus dijalankan.
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

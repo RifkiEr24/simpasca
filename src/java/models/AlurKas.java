@@ -45,7 +45,28 @@ public class AlurKas extends Model<AlurKas> {
         kas.setTanggal(rs.getDate("tanggal"));
         return kas;
     }
-    
+     public boolean update() {
+        this.connect();
+        try {
+            String query = "UPDATE alur_kas SET tipe = ?, nominal = ?, keterangan = ?, tanggal = ? WHERE id = ?";
+            PreparedStatement pstmt = this.con.prepareStatement(query);
+            pstmt.setString(1, this.getTipe());
+            pstmt.setDouble(2, this.getNominal());
+            pstmt.setString(3, this.getKeterangan());
+            pstmt.setDate(4, new java.sql.Date(this.getTanggal().getTime()));
+            pstmt.setInt(5, this.getId());
+            
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+            
+        } catch (SQLException e) {
+            System.out.println("Error update AlurKas: " + e.getMessage());
+            return false;
+        } finally {
+            this.disconnect();
+        }
+    }
     public void saveWithLogistik(String logistikIdStr, String jumlahLogistikStr) {
     this.connect();
     try {
@@ -72,7 +93,6 @@ public class AlurKas extends Model<AlurKas> {
             int jumlah = Integer.parseInt(jumlahLogistikStr);
             
             if (logistikId > 0 && jumlah > 0 && newKasId != -1) {
-                // 2a. Catat di riwayat logistik sebagai 'Masuk'
                 String riwayatQuery = "INSERT INTO logistik_riwayat (logistik_id, tipe, jumlah, keterangan, tanggal, kas_id) VALUES (?, 'Masuk', ?, ?, ?, ?)";
                 PreparedStatement riwayatPstmt = this.con.prepareStatement(riwayatQuery);
                 riwayatPstmt.setInt(1, logistikId);
@@ -83,7 +103,6 @@ public class AlurKas extends Model<AlurKas> {
                 riwayatPstmt.executeUpdate();
                 riwayatPstmt.close();
 
-                // 2b. Update kuantitas total di tabel logistik
                 String updateStokQuery = "UPDATE logistik SET qty = qty + ? WHERE id = ?";
                 PreparedStatement updateStokPstmt = this.con.prepareStatement(updateStokQuery);
                 updateStokPstmt.setInt(1, jumlah);

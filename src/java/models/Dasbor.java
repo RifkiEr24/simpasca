@@ -17,11 +17,6 @@ public class Dasbor {
     private double totalKasMasuk = 0;
     private double totalKasKeluar = 0;
 
-    /**
-     * Constructor Dasbor.
-     * Saat objek Dasbor dibuat, ia akan langsung mengambil semua data
-     * yang diperlukan dari database dan melakukan kalkulasi.
-     */
     public Dasbor() {
         // Ambil semua data dari masing-masing model
         this.semuaBencana = new Bencana().get();
