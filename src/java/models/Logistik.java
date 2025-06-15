@@ -19,7 +19,57 @@ public class Logistik extends Model<Logistik> {
         super();
         this.table = "logistik";
     }
+     @Override
+    public boolean insert() {
+        this.connect();
+        try {
+            // Query SQL ditulis manual dengan nama kolom yang benar
+            String query = "INSERT INTO logistik (nama, kategori, satuan, qty, rasio_per_korban, unit_rasio) VALUES (?, ?, ?, ?, ?, ?)";
+            
+            PreparedStatement pstmt = this.con.prepareStatement(query);
+            pstmt.setString(1, this.getNama());
+            pstmt.setString(2, this.getKategori());
+            pstmt.setString(3, this.getSatuan());
+            pstmt.setInt(4, this.getQty());
+            pstmt.setDouble(5, this.getRasioPerKorban());
+            pstmt.setString(6, this.getUnitRasio());
+            
+            // Eksekusi query
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error di insert Logistik: " + e.getMessage());
+            return false;
+        } finally {
+            this.disconnect();
+        }
+    }
     
+     @Override
+    public boolean update() {
+        this.connect();
+        try {
+            String query = "UPDATE logistik SET nama = ?, kategori = ?, satuan = ?, qty = ?, " + 
+                           "rasio_per_korban = ?, unit_rasio = ? WHERE id = ?";
+            
+            PreparedStatement pstmt = this.con.prepareStatement(query);
+            pstmt.setString(1, this.getNama());
+            pstmt.setString(2, this.getKategori());
+            pstmt.setString(3, this.getSatuan());
+            pstmt.setInt(4, this.getQty());
+            pstmt.setDouble(5, this.getRasioPerKorban());
+            pstmt.setString(6, this.getUnitRasio());
+            pstmt.setInt(7, this.getId()); // WHERE clause
+            
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error di update Logistik: " + e.getMessage());
+            return false;
+        } finally {
+            this.disconnect();
+        }
+    }
     @Override
     protected Logistik toModel(ResultSet rs) throws SQLException {
         Logistik log = new Logistik();
